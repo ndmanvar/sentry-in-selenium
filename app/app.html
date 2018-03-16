@@ -8,7 +8,8 @@
 
     <body>
         <!--Error when clicked-->
-        <button id="button-1" onclick="(function(){ var x; x.somethingnew(); })()">Click me for Error</button>
+        <button id="button-1" onclick="(function(){ var x = {}; x.errorx(); })()">Click me for Error</button>
+        <button id="button-2" onclick="(function(){ var y = {}; y.errory(); })()">Click me for Error</button>
     </body>
 
 </html>
