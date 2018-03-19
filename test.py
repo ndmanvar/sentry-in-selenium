@@ -4,11 +4,8 @@ import requests
 import json
 import os
 
-
-
 class Test:
     def setup_method(self, test_method):
-
         self.driver = webdriver.Chrome()
 
         # set session id as tag
@@ -25,15 +22,15 @@ class Test:
 
 
     def teardown_method(self, test_method):
-        time.sleep(5) # sleep for short time to make sure Sentry event goes out
+        time.sleep(1) # sleep for short time to make sure Sentry event goes out
         has_errors = self.driver.execute_script("return Raven.lastEventId()") != None
 
         self.driver.close()
         if (has_errors):
-            time.sleep(180) # sleep for X seconds due to event ingestion
-            url = "https://sentry.io/api/0/projects/testorg-az/sentry-in-selenium/issues/"
+            time.sleep(3) # sleep for 180 seconds due to event ingestion
+            url = "https://sentry.io/api/0/projects/testorg-az/sentry-in-selenium/events/"
             querystring = {
-                "query": "selenium-session-id:%s" % self.session_id,
+                # "query": "selenium-session-id:%s" % self.session_id,
                 "limit": 25
                 }
             headers = {
@@ -41,9 +38,13 @@ class Test:
             }
             response = requests.request("GET", url, headers=headers, params=querystring)
             json_data = json.loads(response.text)
-            print("-------- %s JS Errors (courtesy of Sentry) --------" % len(json_data))
-            for issue in json_data:
-                print("%s - %s" % (issue['title'], issue['permalink']))
+
+            print("-------- JS Errors (courtesy of Sentry) --------")
+            for event in json_data:
+                for tag in event['tags']:
+                    if tag['key'] == 'selenium-session-id' and tag['value'] == self.session_id:
+                        print("https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/" % event['groupID'])
+
 
     def test_sampletest(self):
         # Test actions
