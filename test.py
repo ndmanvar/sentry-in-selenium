@@ -43,7 +43,7 @@ class Test:
             for event in json_data:
                 for tag in event['tags']:
                     if tag['key'] == 'selenium-session-id' and tag['value'] == self.session_id:
-                        print("https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/" % event['groupID'])
+                        print("%s: https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/" % (event['message'], event['groupID']))
 
 
     def test_sampletest(self):
