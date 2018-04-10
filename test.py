@@ -40,10 +40,14 @@ class Test:
             json_data = json.loads(response.text)
 
             print("-------- JS Errors (courtesy of Sentry) --------")
+            total_errors = 0
             for event in json_data:
                 for tag in event['tags']:
                     if tag['key'] == 'selenium-session-id' and tag['value'] == self.session_id:
-                        print("%s: https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/" % (event['message'], event['groupID']))
+                        total_errors += 1
+                        print("Error #%s:" % total_errors)
+                        print("\tError Message: %s" % event['message'])
+                        print("\tLink to Sentry Issue: https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/" % event['groupID'])
 
 
     def test_sampletest(self):
