@@ -22,12 +22,12 @@ class Test:
 
 
     def teardown_method(self, test_method):
-        time.sleep(3) # sleep for short time to make sure Sentry event goes out
+        time.sleep(5) # sleep for short time to make sure Sentry event goes out
         has_errors = self.driver.execute_script("return Raven.lastEventId()") != None
 
         self.driver.close()
         if (has_errors):
-            time.sleep(3) # sleep for 180 seconds due to event ingestion
+            time.sleep(5) # sleep for 180 seconds due to event ingestion
             url = "https://sentry.io/api/0/projects/testorg-az/sentry-in-selenium/events/"
             querystring = {
                 # "query": "selenium-session-id:%s" % self.session_id,
@@ -48,7 +48,7 @@ class Test:
 
     def test_sampletest(self):
         # Test actions
-        time.sleep(3)
+        time.sleep(5)
         self.driver.find_element_by_id("button-1").click()
         self.driver.find_element_by_id("button-2").click()
         assert 3 == 4 # fail on purpose
