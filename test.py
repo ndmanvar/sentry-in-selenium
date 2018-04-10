@@ -27,7 +27,7 @@ class Test:
 
         self.driver.close()
         if (has_errors):
-            time.sleep(5) # sleep for 180 seconds due to event ingestion
+            time.sleep(5)
             url = "https://sentry.io/api/0/projects/testorg-az/sentry-in-selenium/events/"
             querystring = {
                 # "query": "selenium-session-id:%s" % self.session_id,
@@ -49,6 +49,6 @@ class Test:
     def test_sampletest(self):
         # Test actions
         time.sleep(5)
-        self.driver.find_element_by_id("button-1").click()
-        self.driver.find_element_by_id("button-2").click()
+        self.driver.find_element_by_id("button-1").click() # clicking will cause error
+        self.driver.find_element_by_id("button-2").click() # clicking will cause error
         assert 3 == 4 # fail on purpose
