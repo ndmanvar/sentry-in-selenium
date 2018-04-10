@@ -22,7 +22,7 @@ class Test:
 
 
     def teardown_method(self, test_method):
-        time.sleep(1) # sleep for short time to make sure Sentry event goes out
+        time.sleep(3) # sleep for short time to make sure Sentry event goes out
         has_errors = self.driver.execute_script("return Raven.lastEventId()") != None
 
         self.driver.close()
@@ -34,7 +34,7 @@ class Test:
                 "limit": 25
                 }
             headers = {
-                'authorization': "Bearer %s" % os.environ.get('SENTRY_AUTH_TOKEN') # TODO: use env var
+                'authorization': "Bearer %s" % os.environ.get('SENTRY_AUTH_TOKEN')
             }
             response = requests.request("GET", url, headers=headers, params=querystring)
             json_data = json.loads(response.text)
@@ -48,6 +48,7 @@ class Test:
 
     def test_sampletest(self):
         # Test actions
+        time.sleep(3)
         self.driver.find_element_by_id("button-1").click()
         self.driver.find_element_by_id("button-2").click()
         assert 3 == 4 # fail on purpose
