@@ -51,4 +51,4 @@ class Test:
         time.sleep(5)
         self.driver.find_element_by_id("button-1").click()
         self.driver.find_element_by_id("button-2").click()
-        assert 3 == 4 # fail on purpose
+        # assert 3 == 4 # fail on purpose
