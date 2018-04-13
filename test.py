@@ -25,6 +25,7 @@ class Test:
 
         # set session_id as Raven tag
         self.session_id = self.driver.session_id
+        print('\nSauceOnDemandSessionID=%s job-name=test-name' % self.session_id)
         set_session_id_str = "Raven.setTagsContext({'selenium-session-id': '%s'})" % self.session_id  # need to clean up
         try:
             self.driver.execute_script(set_session_id_str) # error being thrown by selenium even though tag is succesfully set
