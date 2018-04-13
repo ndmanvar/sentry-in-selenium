@@ -11,7 +11,7 @@ class Test:
         username = os.environ.get('SAUCE_USERNAME')
         access_key = os.environ.get('SAUCE_ACCESS_KEY')
         self.driver = webdriver.Remote(
-            command_executor='http://%s:%s@ondemand.saucelabs.com:80/wd/hub' % (username, access_key),
+            command_executor='https://%s:%s@ondemand.saucelabs.com:443/wd/hub' % (username, access_key),
             desired_capabilities={
                 'platform': "Windows 7",
                 'browserName': "chrome",
@@ -26,7 +26,8 @@ class Test:
         # set session_id as Raven tag
         self.session_id = self.driver.session_id
         print('\nSauceOnDemandSessionID=%s job-name=test-name' % self.session_id)
-        set_session_id_str = "Raven.setTagsContext({'selenium-session-id': '%s'})" % self.session_id  # need to clean up
+        set_session_id_str = "Raven.setTagsContext({'selenium-session-id': '%s'}) \
+                && Raven.setTagsContext({'build-name': '%s'})" % (self.session_id, os.environ.get('BUILD_TAG'))
         try:
             self.driver.execute_script(set_session_id_str) # error being thrown by selenium even though tag is succesfully set
         except:
