@@ -37,7 +37,7 @@ class Test:
         time.sleep(5) # sleep for short time to make sure Sentry event goes out
         has_errors = self.driver.execute_script("return Raven.lastEventId()") != None
 
-        self.driver.close()
+        self.driver.quit()
         if (has_errors):
             time.sleep(5)
             url = "https://sentry.io/api/0/projects/testorg-az/sentry-in-selenium/events/"
