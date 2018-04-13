@@ -6,8 +6,6 @@ import os
 
 class Test:
     def setup_method(self, test_method):
-        # self.driver = webdriver.Chrome()
-
         username = os.environ.get('SAUCE_USERNAME')
         access_key = os.environ.get('SAUCE_ACCESS_KEY')
         self.driver = webdriver.Remote(
@@ -19,17 +17,16 @@ class Test:
                 'name': 'test-name',
             })
 
-
-        # set session id as tag
-        self.driver.get("http://d497b79c.ngrok.io/app.html")
+        self.driver.get("http://f172c114.ngrok.io/app.html")
 
         # set session_id as Raven tag
         self.session_id = self.driver.session_id
         print('\nSauceOnDemandSessionID=%s job-name=test-name' % self.session_id)
-        set_session_id_str = "Raven.setTagsContext({'selenium-session-id': '%s'}) \
-                && Raven.setTagsContext({'build-name': '%s'})" % (self.session_id, os.environ.get('BUILD_TAG'))
+        set_session_id_str = "Raven.setTagsContext({'selenium-session-id': '%s'}) && \
+                        Raven.setTagsContext({'build-name': '%s'})" % (self.session_id, os.environ.get('BUILD_TAG'))
         try:
-            self.driver.execute_script(set_session_id_str) # error being thrown by selenium even though tag is succesfully set
+            # error being thrown by selenium even though tag is succesfully set
+            self.driver.execute_script(set_session_id_str)
         except:
             print("Sentry selenium session-id tag set")
 
@@ -60,7 +57,8 @@ class Test:
                         total_errors += 1
                         print("Error #%s:" % total_errors)
                         print("\tError Message: %s" % event['message'])
-                        print("\tLink to Sentry Issue: https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/" % event['groupID'])
+                        print(('\tLink to Sentry Issue: '
+                            'https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/' % event['groupID']))
 
     def test_sampletest(self):
         # Test actions
