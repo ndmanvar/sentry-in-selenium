@@ -6,14 +6,25 @@ import os
 
 class Test:
     def setup_method(self, test_method):
-        self.driver = webdriver.Chrome()
+        # self.driver = webdriver.Chrome()
+
+        username = os.environ.get('SAUCE_USERNAME')
+        access_key = os.environ.get('SAUCE_ACCESS_KEY')
+        self.driver = webdriver.Remote(
+            command_executor='http://%s:%s@ondemand.saucelabs.com:80/wd/hub' % (username, access_key),
+            desired_capabilities={
+                'platform': "Windows 7",
+                'browserName': "chrome",
+                'version': "latest",
+                'name': 'test-name',
+            })
+
 
         # set session id as tag
-        self.driver.get("file:///Users/neilmanvar/PycharmProjects/sentry-in-selenium/app/app.html")
+        self.driver.get("http://d497b79c.ngrok.io/app.html")
 
         # set session_id as Raven tag
         self.session_id = self.driver.session_id
-        print("Selenium session id is : %s" % self.session_id)
         set_session_id_str = "Raven.setTagsContext({'selenium-session-id': '%s'})" % self.session_id  # need to clean up
         try:
             self.driver.execute_script(set_session_id_str) # error being thrown by selenium even though tag is succesfully set
@@ -48,7 +59,6 @@ class Test:
                         print("Error #%s:" % total_errors)
                         print("\tError Message: %s" % event['message'])
                         print("\tLink to Sentry Issue: https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/" % event['groupID'])
-
 
     def test_sampletest(self):
         # Test actions
