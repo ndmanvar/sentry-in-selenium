@@ -1,7 +1,7 @@
-# sentry-demos/react
+# sentry-in-selenium
 
 ## Goal/Summary:
-Surface JS Errors from Selenium tests in CI
+Surface JS Errors from Selenium tests in CI (via test result report)
 
 ## How this works:
 Sentry is setup/configured within application.
