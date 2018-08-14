@@ -16,3 +16,5 @@ JUnit Test Report read in by CI.
 2. Install dependencies/packages: `pip install -r requirements.txt`
 3. Run: `pytest --junitxml=report.xml test.py`
 
+## Test result contains links to sentry issues for each JS error
+![Test Result Report](images/test-result-report.png)
