@@ -15,6 +15,7 @@ class Test:
                 'browserName': "chrome",
                 'version': "latest",
                 'name': 'test-name',
+                'extendedDebugging': True,
             })
 
         self.driver.get("http://f172c114.ngrok.io/app.html")
@@ -22,7 +23,7 @@ class Test:
         # set session_id as Raven tag
         self.session_id = self.driver.session_id
         print('\nSauceOnDemandSessionID=%s job-name=test-name' % self.session_id)
-        set_session_id_str = "Raven.setTagsContext({'selenium-session-id': '%s'}) && \
+        set_session_id_str = "Raven && Raven.setTagsContext({'selenium-session-id': '%s'}) && \
                         Raven.setTagsContext({'build-name': '%s'})" % (self.session_id, os.environ.get('BUILD_TAG'))
         try:
             # error being thrown by selenium even though tag is succesfully set
