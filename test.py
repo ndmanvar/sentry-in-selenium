@@ -16,16 +16,17 @@ class Test:
                 'version': "latest",
                 'name': 'test-name',
                 'extendedDebugging': True,
+                'commandTimeout': 300
             })
 
         # go to test application (via sauce-connect)
         self.driver.get("http://localhost:8000/app.html")
 
-        # set session_id as Raven tag
+        # set session_id as Sentry tag
         self.session_id = self.driver.session_id
         print('\nSauceOnDemandSessionID=%s job-name=test-name' % self.session_id)
-        set_session_id_str = "Raven && Raven.setTagsContext({'selenium-session-id': '%s'}) && \
-                        Raven.setTagsContext({'build-name': '%s'})" % (self.session_id, os.environ.get('BUILD_TAG'))
+        set_session_id_str = "Sentry && Sentry.configureScope(function (scope) { scope.setTag({'selenium-session-id': '%s'}); scope.setTag({'build-name': '%s'}); } )" % (self.session_id, os.environ.get('BUILD_TAG'))
+        # above not working
         try:
             # error being thrown by selenium even though tag is succesfully set
             self.driver.execute_script(set_session_id_str)
@@ -34,7 +35,7 @@ class Test:
 
     def teardown_method(self, test_method):
         time.sleep(5) # sleep for short time to make sure Sentry event goes out
-        has_errors = self.driver.execute_script("return Raven.lastEventId()") != None
+        has_errors = self.driver.execute_script("return Sentry.lastEventId()") != None
 
         self.driver.quit()
         if (has_errors):
