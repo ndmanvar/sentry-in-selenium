@@ -31,7 +31,7 @@ class Test:
                 scope.setTag('build-name', '%s'); \
             })" % (self.session_id, os.environ.get('BUILD_TAG'))
         try:
-            # error being thrown by selenium even though tag is succesfully set
+            # error being thrown by selenium even though tag is successfully set
             self.driver.execute_script(set_session_id_str)
         except:
             print("Sentry selenium session-id tag set")
