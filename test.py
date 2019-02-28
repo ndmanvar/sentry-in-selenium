@@ -6,10 +6,10 @@ import os
 
 class Test:
     def setup_method(self, test_method):
-        username = os.environ.get('SAUCE_USERNAME')
-        access_key = os.environ.get('SAUCE_ACCESS_KEY')
+        # launch browser (on saucelabs)
         self.driver = webdriver.Remote(
-            command_executor='https://%s:%s@ondemand.saucelabs.com:443/wd/hub' % (username, access_key),
+            command_executor='https://%s:%s@ondemand.saucelabs.com:443/wd/hub' %
+                             (os.environ.get('SAUCE_USERNAME'), os.environ.get('SAUCE_ACCESS_KEY')),
             desired_capabilities={
                 'platform': "Windows 7",
                 'browserName': "chrome",
@@ -18,6 +18,7 @@ class Test:
                 'extendedDebugging': True,
             })
 
+        # go to test application (via sauce-connect)
         self.driver.get("http://localhost:8000/app.html")
 
         # set session_id as Raven tag
@@ -30,7 +31,6 @@ class Test:
             self.driver.execute_script(set_session_id_str)
         except:
             print("Sentry selenium session-id tag set")
-
 
     def teardown_method(self, test_method):
         time.sleep(5) # sleep for short time to make sure Sentry event goes out
@@ -61,11 +61,9 @@ class Test:
                         for frame in reversed(event['entries'][0]['data']['values'][0]['stacktrace']['frames']):
                             print("\t\tat %s (%s:%s:%s)" %
                                   (frame['function'] or '?', frame['filename'], frame['lineNo'], frame['colNo']))
-
                         print(('\n\tLink to Sentry Issue/Error: '
                                'https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/events/%s/\n' %
                                (event['groupID'], event['eventID'])))  # todo, link to event?
-    # todo commit
 
     def test_sampletest(self):
         # Test actions
