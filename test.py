@@ -43,22 +43,16 @@ class Test:
         self.driver.quit()
         if (has_errors):
             time.sleep(5)
-            url = "https://sentry.io/api/0/projects/testorg-az/sentry-in-selenium/events/"
-            querystring = {
-                # "query": "selenium-session-id:%s" % self.session_id,
-                "limit": 25
-                }
+            url = "https://sentry.io/api/0/organizations/testorg-az/events/?statsPeriod=14d&query=selenium-session-id%%3A%%22%s%%22" % self.session_id
             headers = {
                 'authorization': "Bearer %s" % os.environ.get('SENTRY_AUTH_TOKEN')
             }
-            response = requests.request("GET", url, headers=headers, params=querystring)
+            response = requests.get(url, headers=headers)
             json_data = json.loads(response.text)
 
             print("-------- JS Errors (courtesy of Sentry) --------")
             total_errors = 0
             for event in json_data:
-                for tag in event['tags']:
-                    if tag['key'] == 'selenium-session-id' and tag['value'] == self.session_id:
                         total_errors += 1
                         print("Error #%s:" % total_errors)
                         print("\tError Message: %s" % event['message'])
