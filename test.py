@@ -18,7 +18,7 @@ class Test:
                 'extendedDebugging': True,
             })
 
-        self.driver.get("http://f172c114.ngrok.io/app.html")
+        self.driver.get("http://localhost:8080/app.html")
 
         # set session_id as Raven tag
         self.session_id = self.driver.session_id
