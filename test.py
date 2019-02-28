@@ -18,7 +18,7 @@ class Test:
                 'extendedDebugging': True,
             })
 
-        self.driver.get("http://localhost:8080/app.html")
+        self.driver.get("http://localhost:8000/app.html")
 
         # set session_id as Raven tag
         self.session_id = self.driver.session_id
@@ -58,8 +58,14 @@ class Test:
                         total_errors += 1
                         print("Error #%s:" % total_errors)
                         print("\tError Message: %s" % event['message'])
-                        print(('\tLink to Sentry Issue: '
-                            'https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/' % event['groupID']))
+                        for frame in reversed(event['entries'][0]['data']['values'][0]['stacktrace']['frames']):
+                            print("\t\tat %s (%s:%s:%s)" %
+                                  (frame['function'] or '?', frame['filename'], frame['lineNo'], frame['colNo']))
+
+                        print(('\n\tLink to Sentry Issue/Error: '
+                               'https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/events/%s/\n' %
+                               (event['groupID'], event['eventID'])))  # todo, link to event?
+    # todo commit
 
     def test_sampletest(self):
         # Test actions
