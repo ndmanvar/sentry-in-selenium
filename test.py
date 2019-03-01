@@ -34,11 +34,16 @@ class Test:
             # error being thrown by selenium even though tag is successfully set
             self.driver.execute_script(set_session_id_str)
         except:
-            print("Sentry selenium session-id tag set")
+            print("Error setting Sentry selenium-id tag")
 
     def teardown_method(self, test_method):
         time.sleep(5) # sleep for short time to make sure Sentry event goes out
-        has_errors = self.driver.execute_script("return Sentry.lastEventId()") != None
+
+        has_errors = False
+        try:
+            has_errors = self.driver.execute_script("return Sentry.lastEventId()") != None
+        except:
+            print("No application errors detected")
 
         self.driver.quit()
         if (has_errors):
@@ -54,14 +59,14 @@ class Test:
             response = requests.request("GET", url, headers=headers, params=querystring)
             json_data = json.loads(response.text)
 
-            print("-------- JS Errors (courtesy of Sentry) --------")
+            print("\n\n-------- JS Errors (courtesy of Sentry) --------")
             total_errors = 0
             for event in json_data:
                 for tag in event['tags']:
                     if tag['key'] == 'selenium-session-id' and tag['value'] == self.session_id:
                         total_errors += 1
                         print("Error #%s:" % total_errors)
-                        print("\tError Message: %s" % event['message'])
+                        print("\t%s" % event['message'])
                         for frame in reversed(event['entries'][0]['data']['values'][0]['stacktrace']['frames']):
                             print("\t\tat %s (%s:%s:%s)" %
                                   (frame['function'] or '?', frame['filename'], frame['lineNo'], frame['colNo']))
