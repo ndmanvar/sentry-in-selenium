@@ -20,7 +20,7 @@ class Test:
             })
 
         # go to test application (via sauce-connect)
-        self.driver.get("http://localhost:8000/app.html")
+        self.driver.get("http://localhost:8000/")
 
         # set session_id as Sentry tag
         self.session_id = self.driver.session_id
