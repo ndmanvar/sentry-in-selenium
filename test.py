@@ -48,16 +48,6 @@ class Test:
         self.driver.quit()
         if (has_errors):
             time.sleep(5)
-            # url = "https://sentry.io/api/0/projects/testorg-az/sentry-in-selenium/events/"
-            # querystring = {
-            #     # "query": "selenium-session-id:%s" % self.session_id,
-            #     "limit": 25
-            #     }
-            # headers = {
-            #     'authorization': "Bearer %s" % os.environ.get('SENTRY_AUTH_TOKEN')
-            # }
-            # response = requests.request("GET", url, headers=headers, params=querystring)
-            # json_data = json.loads(response.text)
 
             print("\n\n-------- JS Errors (powered by Sentry) --------")
             total_errors = 0
