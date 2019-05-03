@@ -61,8 +61,6 @@ class Test:
             }
 
             response = requests.request("POST", url, data=payload, headers=headers)
-
-            print(response.text)
             json_data = json.loads(response.text)
 
             for data in json_data['data']:
@@ -73,8 +71,8 @@ class Test:
                        'https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/events/%s/\n' %
                        (data['issue.id'], data['id'])))  # todo, link to event?
 
-                stackIndexes = range(len(data['stack.function'])).reverse()
-                for i in stackIndexes:
+                stack_indexes = range(len(data['stack.function'])).reverse()
+                for i in stack_indexes:
                     print(i)
                     print("\t\tat %s (%s:%s:%s)" % (data['stack.function'][i] or '?', data['stack.filename'][i], data['stack.lineno'][i], data['stack.colno'][i]))
 
