@@ -64,17 +64,17 @@ class Test:
             json_data = json.loads(response.text)
 
             for data in json_data['data']:
-                message = data['message']
-                print("\t%s" % message)
+                if 'message' in data:
+                    message = data['message']
+                    print("\t%s" % message)
 
-                print(('\n\tLink to Sentry Issue/Error: '
-                       'https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/events/%s/\n' %
-                       (data['issue.id'], data['id'])))  # todo, link to event?
-
-                stack_indexes = range(len(data['stack.function'])).reverse()
-                for i in stack_indexes:
-                    print(i)
-                    print("\t\tat %s (%s:%s:%s)" % (data['stack.function'][i] or '?', data['stack.filename'][i], data['stack.lineno'][i], data['stack.colno'][i]))
+                    stack_indexes = range(len(data['stack.function']))
+                    stack_indexes.reverse()
+                    for i in stack_indexes:
+                        print("\t\tat %s (%s:%s:%s)" % (data['stack.function'][i] or '?', data['stack.filename'][i], data['stack.lineno'][i], data['stack.colno'][i]))
+                    print(('\tLink to Sentry Issue/Error: '
+                           'https://sentry.io/testorg-az/sentry-in-selenium/issues/%s/events/%s/\n' %
+                           (data['issue.id'], data['id'])))  # todo, link to event?
 
 
     def test_sampletest(self):
