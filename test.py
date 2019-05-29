@@ -95,4 +95,3 @@ class Test:
 
         # assert success message is present/displayed
         assert self.driver.find_element_by_class_name("cart-success").is_displayed()
-        assert 3 == 4
