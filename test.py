@@ -20,7 +20,7 @@ class Test:
             })
 
         # go to test application (via sauce-connect)
-        self.driver.get("http://localhost:8000/")
+        self.driver.get("http://localhost:5000/")
 
         # set session_id as Sentry tag
         self.session_id = self.driver.session_id
@@ -52,7 +52,7 @@ class Test:
                ],
                "range": "14d",
                "conditions": [[ "selenium-session-id", "=", self.session_id]],
-               "projects": [ 304007 ],
+               "projects": [ 304007, 1356467 ],
                "groupby": [ "time" ]
             }
             headers = {
@@ -83,9 +83,16 @@ class Test:
         # Test actions
 
         # add two items to cart
-        self.driver.find_element_by_xpath("(//button)[1]").click()
-        self.driver.find_element_by_xpath("(//button)[2]").click()
+        self.driver.find_element_by_xpath("(//div[contains(@class,'inventory')]//button)[1]").click()
+        self.driver.find_element_by_xpath("(//div[contains(@class,'inventory')]//button)[1]").click()
 
+        # add two more items to cart...
+        self.driver.find_element_by_xpath("(//div[contains(@class,'inventory')]//button)[2]").click()
+        self.driver.find_element_by_xpath("(//div[contains(@class,'inventory')]//button)[2]").click()
+
+        # click on Checkout
+        self.driver.find_element_by_css_selector(".sidebar button").click()
 
         # assert success message is present/displayed
+        assert self.driver.find_element_by_class_name("cart-success").is_displayed()
         assert 3 == 4
