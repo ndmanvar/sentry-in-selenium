@@ -65,8 +65,7 @@ class Test:
 
             for data in json_data['data']:
                 if 'message' in data:
-                    message = data['message']
-                    print("\t%s" % message)
+                    print("\t%s" % data['message'])
 
                     stack_indexes = range(len(data['stack.function']))
                     stack_indexes.reverse()
@@ -85,10 +84,6 @@ class Test:
         # add two items to cart
         self.driver.find_element_by_xpath("(//div[contains(@class,'inventory')]//button)[1]").click()
         self.driver.find_element_by_xpath("(//div[contains(@class,'inventory')]//button)[1]").click()
-
-        # add two more items to cart...
-        self.driver.find_element_by_xpath("(//div[contains(@class,'inventory')]//button)[2]").click()
-        self.driver.find_element_by_xpath("(//div[contains(@class,'inventory')]//button)[2]").click()
 
         # click on Checkout
         self.driver.find_element_by_css_selector(".sidebar button").click()
