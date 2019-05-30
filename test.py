@@ -79,8 +79,6 @@ class Test:
                            (data['issue.id'], data['id'])))
 
     def test_sampletest(self):
-        # Test actions
-
         # add two items to cart
         self.driver.find_element_by_xpath("(//div[contains(@class,'inventory')]//button)[1]").click()
         self.driver.find_element_by_xpath("(//div[contains(@class,'inventory')]//button)[1]").click()
