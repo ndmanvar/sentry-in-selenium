@@ -16,7 +16,7 @@ JUnit Test Report read in by CI.
 2. Set SAUCE_USERNAME and SAUCE_ACCESS_KEY env var
 3. Run Sauce Connect (`make sc`)
 4. Install dependencies/packages: `pip install -r requirements.txt`
-5. Run App: `make run_app_server`
+5. Run App. See github.com/sentry-demos/react.
 
 ## Run
 1. `pytest --junitxml=report.xml test.py` -> This should run the tests on Sauce and javascript errors should be surfaced in report (soon will surface in console also)
